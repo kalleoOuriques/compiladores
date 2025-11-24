@@ -1,0 +1,265 @@
+int max_size;
+int min_size;
+float average;
+string program_name;
+
+max_size = 1000;
+min_size = 10;
+average = 0.0;
+program_name = "ConvCC Compiler Test";
+
+int counter;
+counter = 0;
+
+int array_data;
+array_data = new int[50];
+
+int i;
+i = 0;
+
+for (i = 0; i < 50; i = i + 1) {
+    array_data[i] = i * 2;
+    counter = counter + 1;
+}
+
+int sum;
+sum = 0;
+
+for (i = 0; i < 50; i = i + 1) {
+    sum = sum + array_data[i];
+}
+
+average = sum / 50;
+
+if (average > 40) {
+    print(average);
+}
+
+def fibonacci(int n) {
+    if (n <= 1) {
+        return n;
+    } else {
+        int a;
+        int b;
+        a = fibonacci(n - 1);
+        b = fibonacci(n - 2);
+        return a + b;
+    }
+}
+
+def factorial(int n) {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+
+def sum_array(int arr, int size) {
+    int total;
+    total = 0;
+    int j;
+    j = 0;
+    
+    for (j = 0; j < size; j = j + 1) {
+        total = total + arr[j];
+    }
+    
+    return total;
+}
+
+int fib_result;
+fib_result = fibonacci(10);
+
+if (fib_result > 50) {
+    print(fib_result);
+} else {
+    print(0);
+}
+
+int fact_result;
+fact_result = factorial(5);
+
+if (fact_result == 120) {
+    print(fact_result);
+}
+
+int matrix;
+matrix = new int[100];
+
+int row;
+int col;
+
+row = 0;
+
+for (row = 0; row < 10; row = row + 1) {
+    col = 0;
+    for (col = 0; col < 10; col = col + 1) {
+        int index;
+        index = row * 10 + col;
+        matrix[index] = row + col;
+    }
+}
+
+int diagonal_sum;
+diagonal_sum = 0;
+
+for (i = 0; i < 10; i = i + 1) {
+    int diag_index;
+    diag_index = i * 10 + i;
+    diagonal_sum = diagonal_sum + matrix[diag_index];
+}
+
+print(diagonal_sum);
+
+def max(int a, int b) {
+    if (a > b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+def min(int a, int b) {
+    if (a < b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+int num1;
+int num2;
+int num3;
+
+num1 = 42;
+num2 = 17;
+num3 = 99;
+
+int maximum;
+maximum = max(num1, num2);
+maximum = max(maximum, num3);
+
+print(maximum);
+
+int minimum;
+minimum = min(num1, num2);
+minimum = min(minimum, num3);
+
+print(minimum);
+
+string message1;
+string message2;
+string message3;
+
+message1 = "Hello";
+message2 = "World";
+message3 = "ConvCC 2025";
+
+print(message1);
+print(message2);
+print(message3);
+
+float pi;
+float radius;
+float area;
+
+pi = 3.14159;
+radius = 10.5;
+area = pi * radius * radius;
+
+if (area > 300.0) {
+    print(area);
+}
+
+int test_value;
+test_value = 0;
+
+for (test_value = 0; test_value < 20; test_value = test_value + 1) {
+    if (test_value % 2 == 0) {
+        print(test_value);
+    }
+}
+
+def is_even(int n) {
+    int remainder;
+    remainder = n % 2;
+    if (remainder == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+def power(int base, int exp) {
+    if (exp == 0) {
+        return 1;
+    } else {
+        return base * power(base, exp - 1);
+    }
+}
+
+int power_result;
+power_result = power(2, 10);
+
+if (power_result == 1024) {
+    print(power_result);
+}
+
+int numbers;
+numbers = new int[20];
+
+for (i = 0; i < 20; i = i + 1) {
+    numbers[i] = i * i;
+}
+
+int search_value;
+search_value = 64;
+
+int found;
+found = 0;
+
+for (i = 0; i < 20; i = i + 1) {
+    if (numbers[i] == search_value) {
+        found = 1;
+        break;
+    }
+}
+
+if (found == 1) {
+    print(search_value);
+}
+
+float temperature;
+temperature = 36.5;
+
+if (temperature < 35.0) {
+    print(0);
+} else {
+    if (temperature > 37.5) {
+        print(2);
+    } else {
+        print(1);
+    }
+}
+
+int final_counter;
+final_counter = 0;
+
+{
+    int local_var;
+    local_var = 100;
+    
+    {
+        int nested_var;
+        nested_var = 200;
+        final_counter = local_var + nested_var;
+    }
+    
+    print(final_counter);
+}
+
+int status;
+status = 1;
+print(status);
+
