@@ -1,0 +1,46 @@
+# Arquivos compilados
+*.o
+*.obj
+*.exe
+compiler
+
+# Arquivos de debug
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Arquivos gerados pelo compilador
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Diretórios de build
+build/
+dist/
+bin/
+obj/
+
+# Arquivos temporários do editor
+*~
+*.swp
+*.swo
+*.bak
+.vscode/
+.idea/
+*.code-workspace
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Arquivos de core dump
+core
+core.*
+
