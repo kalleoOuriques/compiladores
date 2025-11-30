@@ -1,8 +1,10 @@
 # ConvCC-2025-2 Compiler
 
 Compilador completo para a linguagem ConvCC-2025-2 com:
+
 - **Analisador Léxico** (Tarefa 1)
 - **Analisador Sintático LL(1)** (Tarefa 2)
+- **Analisador Semântico** (Tarefa 3)
 
 ## 📋 Requisitos
 
@@ -49,6 +51,7 @@ make test
 Programa sintaticamente e lexicamente correto.
 
 **Saída:**
+
 ```
 Programa sintaticamente correto!
 
@@ -61,6 +64,7 @@ Tabela de símbolos:
 Erro sintático na linha 88: falta `;` após declaração de variável.
 
 **Saída:**
+
 ```
 Erro sintático: esperado 'SEMICOLON' mas encontrado 'IDENT' na linha 89, coluna 1
 ```
@@ -70,6 +74,7 @@ Erro sintático: esperado 'SEMICOLON' mas encontrado 'IDENT' na linha 89, coluna
 Erro léxico na linha 90: caractere inválido `@` no identificador.
 
 **Saída:**
+
 ```
 Erro léxico: Unexpected char: @ na linha 90, coluna 10
 ```
@@ -96,11 +101,13 @@ compilador/
 ## 🌳 Gramática LL(1)
 
 A gramática foi transformada para LL(1) removendo:
+
 - Recursão à esquerda nas expressões
 - Ambiguidades
 - Necessidade de fatoração à esquerda
 
 Exemplo de transformação:
+
 ```
 # Antes (com recursão à esquerda)
 EXPR → EXPR + TERM | TERM
@@ -123,16 +130,19 @@ EXPR' → + TERM EXPR' | ε
 ## 🔍 Detecção de Erros
 
 ### Erros Léxicos
+
 - Caracteres inválidos
 - Strings não terminadas
 - Símbolos desconhecidos
 
 ### Erros Sintáticos
+
 - Tokens inesperados
 - Falta de delimitadores (`;`, `)`, `}`, etc.)
 - Estrutura inválida
 
 O compilador **para imediatamente** ao encontrar um erro e exibe:
+
 - Tipo do erro (léxico ou sintático)
 - Linha e coluna
 - Descrição clara do problema
@@ -140,11 +150,13 @@ O compilador **para imediatamente** ao encontrar um erro e exibe:
 ## 📊 Implementação Técnica
 
 ### Analisador Léxico
+
 - Implementado com **DFA** (Autômatos Finitos Determinísticos)
 - Leitura caractere por caractere
 - Tabela de símbolos com todas as ocorrências
 
 ### Analisador Sintático
+
 - Parser **LL(1)** com pilha
 - Tabela LL(1) com ~300 entradas
 - Construída manualmente em `grammar.cpp`

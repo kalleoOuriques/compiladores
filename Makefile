@@ -31,3 +31,8 @@ test: compiler
 	@echo "=== Teste 3: Erro Léxico (Esperado) ==="
 	@echo "============================================"
 	-./compiler test/test_lexical_error.convcc
+		@echo ""
+	@echo "============================================"
+	@echo "=== Teste 4: Erro Semântico (Esperado) ==="
+	@echo "============================================"
+	-./compiler test/test_semantic_error.convcc

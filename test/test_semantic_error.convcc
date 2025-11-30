@@ -1,11 +1,11 @@
 int max_size;
 int min_size;
-int average;
+float average;
 string program_name;
 
 max_size = 1000;
 min_size = 10;
-average = 0;
+average = 0.0;
 program_name = "ConvCC Compiler Test";
 
 int counter;
@@ -217,7 +217,7 @@ int search_value;
 search_value = 64;
 
 int found;
-found = 0;
+found = "Olá mundo";
 
 for (i = 0; i < 20; i = i + 1) {
     if (numbers[i] == search_value) {
