@@ -1,5 +1,6 @@
 #include "parser.hpp"
 #include "utils.hpp"
+#include "code_generator.hpp"
 #include <iostream>
 #include <algorithm>
 
@@ -103,6 +104,11 @@ void Parser::parse()
 
         std::cout << "Árvore AST gerada (raiz):\n";
         root->print();
+
+        std::cout << "\nIniciando geração de código intermediário...\n";
+
+        root->genCode(gen); 
+        gen.printCode();
     }
 }
 

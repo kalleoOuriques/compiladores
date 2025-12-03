@@ -5,6 +5,7 @@
 #include "lexer.hpp"
 #include "grammar.hpp"
 #include "ast.hpp"
+#include "code_generator.hpp"
 #include <stack>
 #include <vector>
 
@@ -19,6 +20,8 @@ private:
     std::string lastType;
     std::vector<VarDeclNode *> tempParams;
 
+    CodeGenerator gen;
+
     void advance();
     bool isTerminal(const std::string &symbol);
     bool matchTerminal(const std::string &terminal, TokenType type);
@@ -28,6 +31,10 @@ public:
     Parser(Lexer &lex);
     void parse();
     std::unique_ptr<ASTNode> root;
+
+    CodeGenerator& getGen() {
+        return gen;
+    }
 };
 
 #endif

@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra
 INCLUDES = -Iinclude
 
-SRC = src/main.cpp src/lexer.cpp src/parser.cpp src/symbol_table.cpp src/grammar.cpp src/token.cpp src/utils.cpp
+SRC = src/main.cpp src/lexer.cpp src/parser.cpp src/symbol_table.cpp src/grammar.cpp src/token.cpp src/utils.cpp src/code_generator.cpp
 OBJ = $(SRC:.cpp=.o)
 
 all: compiler
