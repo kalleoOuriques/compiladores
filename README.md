@@ -42,6 +42,7 @@ make test
 # Testes com erro (devem falhar)
 ./compiler test/test_syntax_error.convcc
 ./compiler test/test_lexical_error.convcc
+./compiler test/test_semantic_error.convcc
 ```
 
 ## 🧪 Resultados Esperados
@@ -79,15 +80,29 @@ Erro léxico na linha 90: caractere inválido `@` no identificador.
 Erro léxico: Unexpected char: @ na linha 90, coluna 10
 ```
 
-## 📝 Estrutura do Código
+### ❌ test_semantic_error.convcc (264 linhas)
+
+Erro semântico na linha 32: variável float recebendo int.
+Erro semântico na linha 34: comparação entre float e int.
+Erro semântico na linha 220: variável int recebendo string.
+
+**Saída:**
 
 ```
+Erro semântico: Atribuição inválida. Variável 'average' é do tipo float mas recebeu int na linha 32.
+Erro semântico: Tipos incompatíveis (float > int) na linha 34.
+Erro semântico: Atribuição inválida. Variável 'found' é do tipo int mas recebeu string na linha 220.
+```
+
+## 📝 Estrutura do Código
+
 compilador/
-├── include/          # Headers (.hpp)
-├── src/              # Implementações (.cpp)
-├── test/             # Arquivos de teste (.convcc)
-├── Makefile          # Build system
-└── README.md         # Este arquivo
+├── include/ # Headers (.hpp)
+├── src/ # Implementações (.cpp)
+├── test/ # Arquivos de teste (.convcc)
+├── Makefile # Build system
+└── README.md # Este arquivo
+
 ```
 
 ## 🔤 Tokens Reconhecidos
@@ -109,12 +124,16 @@ A gramática foi transformada para LL(1) removendo:
 Exemplo de transformação:
 
 ```
+
 # Antes (com recursão à esquerda)
+
 EXPR → EXPR + TERM | TERM
 
 # Depois (LL(1))
+
 EXPR → TERM EXPR'
 EXPR' → + TERM EXPR' | ε
+
 ```
 
 ## 🛠️ Construtos Suportados
@@ -147,6 +166,11 @@ O compilador **para imediatamente** ao encontrar um erro e exibe:
 - Linha e coluna
 - Descrição clara do problema
 
+### Erros Semânticos
+- Tipos incompatíveis em atribuições e expressões
+- Uso de variáveis não declaradas
+- Verificação de tipos em operações e comparações
+
 ## 📊 Implementação Técnica
 
 ### Analisador Léxico
@@ -161,6 +185,8 @@ O compilador **para imediatamente** ao encontrar um erro e exibe:
 - Tabela LL(1) com ~300 entradas
 - Construída manualmente em `grammar.cpp`
 
----
-
-**Status**: ✅ Completo - Tarefas 1 e 2 implementadas e testadas.
+### Analisador Semântico
+- Construção de AST (Árvore Sintática Abstrata) completa
+- Verificação de Tipos e controle de Escopos aninhados
+- Implementado via SDT
+```
