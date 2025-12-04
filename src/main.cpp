@@ -57,8 +57,6 @@ int main(int argc, char **argv)
         // Qualquer erro léxico ou sintático causará exit(1) dentro dos métodos
         parser.parse();
 
-        parser.getGen().printCode();
-
         // Tabela de símbolos para análise semântica (com escopos corretos)
         SymbolTable semanticSymtab;
 
