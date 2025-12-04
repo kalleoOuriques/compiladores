@@ -5,6 +5,7 @@ Compilador completo para a linguagem ConvCC-2025-2 com:
 - **Analisador Léxico** (Tarefa 1)
 - **Analisador Sintático LL(1)** (Tarefa 2)
 - **Analisador Semântico** (Tarefa 3)
+- **Gerador de Código Intermediário** (Tarefa 4)
 
 ## 📋 Requisitos
 
@@ -49,7 +50,7 @@ make test
 
 ### ✅ test_correct.convcc (240 linhas)
 
-Programa sintaticamente e lexicamente correto.
+Programa sintaticamente e lexicamente correto. Gera a Árvore Sintática Abstrata (AST) e o Código de Três Endereços (TAC).
 
 **Saída:**
 
@@ -189,3 +190,18 @@ O compilador **para imediatamente** ao encontrar um erro e exibe:
 - Construção de AST (Árvore Sintática Abstrata) completa
 - Verificação de Tipos e controle de Escopos aninhados
 - Implementado via SDT
+
+### Gerador de Código Intermediário (Fase 4 - GCI)
+Implementação de SDT L-Atribuída (Syntax Directed Translation).
+
+Gera Código de Três Endereços (TAC).
+
+Funcionalidades:
+
+Geração automática de temporários (t0, t1...).
+
+Geração de labels para controle de fluxo (L0, L1...).
+
+Tradução de estruturas de controle (if, for, while) utilizando desvios condicionais (ifFalse) e incondicionais (goto).
+
+Passagem de parâmetros e chamadas de função (param, call).
