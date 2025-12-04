@@ -119,25 +119,31 @@ void Parser::parse()
 
 /**
  * @brief Executa uma ação semântica baseada em um marcador da gramática.
- * * Esta função é chamada pelo Parser sempre que um token de ação (iniciado por '#')
- * é encontrado no topo da pilha de análise sintática. Ela é responsável por:
+ *
+ * Esta função é chamada pelo Parser sempre que um token de ação (iniciado por '#')
+ * é encontrado no topo da pilha de análise sintática. Ela atua como o motor da SDD.
+ *
+ * --- Responsabilidades Práticas ---
  * 1. Interpretar o comando (ex: "#BUILD_ASSIGN", "#BUILD_IF").
  * 2. Desempilhar os nós necessários da pilha semântica (`semanticStack`).
  * 3. Construir o nó da AST correspondente com os dados coletados.
  * 4. Empilhar o novo nó resultante de volta na pilha semântica.
- * * @param action O identificador da ação semântica (ex: "#BUILD_VARDECL").
+ *
+ * --- (SDD L-Atribuída) ---
+ * Esta implementação utiliza atributos herdados e sintetizados para cumprir os requisitos
+ * de Análise Semântica e Geração de Código:
+ * 1. **Atributos Sintetizados:** Construídos de baixo para cima (Bottom-Up) usando a `semanticStack`.
+ * (Exemplo: `#BUILD_ADD` desempilha os operandos filhos para criar o nó pai `BinaryExpr`).
+ * 2. **Atributos Herdados:** Informações que fluem da esquerda para a direita via variáveis
+ * auxiliares do Parser (como `lastType` e `tempParams`).
+ * (Exemplo: Em `int x;`, o tipo 'int' é capturado por `#BUILD_TYPE`, salvo em `lastType`,
+ * e posteriormente "herdado" pela ação `#BUILD_VARDECL` para criar o nó corretamente).
+ *
+ * @param action O identificador da ação semântica (ex: "#BUILD_VARDECL").
  */
+
 void Parser::performAction(const std::string &action)
 {
-    // Esta função implementa a SDD.
-    // Características L-Atribuídas:
-    // 1. Atributos Sintetizados: Construídos de baixo para cima usando a `semanticStack`
-    //    (ex: #BUILD_ADD desempilha filhos para criar o pai).
-    // 2. Atributos Herdados: Informações fluem da esquerda para a direita via variáveis
-    //    auxiliares como `lastType` e `tempParams`.
-    //    Exemplo: Em `int x;`, o tipo 'int' é lido (#BUILD_TYPE), salvo em `lastType`
-    //    e herdado pela ação posterior (#BUILD_VARDECL) para criar o nó.
-
     if (action == "#BUILD_INT")
     {
         int val = std::stoi(previous.lexeme);
