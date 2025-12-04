@@ -87,6 +87,8 @@ Grammar::Grammar()
 
 void Grammar::buildLL1Table()
 {
+    // Além dos terminais e não-terminais, inserimos "Marcadores Semânticos" (ex: #BUILD_ADD, #MARK_DECL) nas regras de produção.
+
     // ======== PROGRAM ========
     // PROGRAM -> DECL_LIST
     ll1table[{"PROGRAM", "KW_INT"}] = {"#MARK_PROG", "DECL_LIST", "#BUILD_PROG"};

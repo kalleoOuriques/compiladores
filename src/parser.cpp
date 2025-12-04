@@ -37,6 +37,11 @@ void Parser::parse()
         if (top == "")
             continue;
 
+        // --- Processamento de Ações Semânticas (SDT) ---
+        // Se o símbolo no topo da pilha começar com '#', ele é um Marcador de Ação.
+        // Esses marcadores não consomem tokens da entrada. Eles apenas disparam
+        // a função `performAction` para manipular a pilha semântica (semanticStack)
+        // e construir os nós da AST correspondentes à regra gramatical recém-processada.
         if (top.length() > 0 && top[0] == '#')
         {
             performAction(top);
@@ -107,7 +112,7 @@ void Parser::parse()
 
         std::cout << "\nIniciando geração de código intermediário...\n";
 
-        root->genCode(gen); 
+        root->genCode(gen);
         gen.printCode();
     }
 }
@@ -124,6 +129,15 @@ void Parser::parse()
  */
 void Parser::performAction(const std::string &action)
 {
+    // Esta função implementa a SDD.
+    // Características L-Atribuídas:
+    // 1. Atributos Sintetizados: Construídos de baixo para cima usando a `semanticStack`
+    //    (ex: #BUILD_ADD desempilha filhos para criar o pai).
+    // 2. Atributos Herdados: Informações fluem da esquerda para a direita via variáveis
+    //    auxiliares como `lastType` e `tempParams`.
+    //    Exemplo: Em `int x;`, o tipo 'int' é lido (#BUILD_TYPE), salvo em `lastType`
+    //    e herdado pela ação posterior (#BUILD_VARDECL) para criar o nó.
+
     if (action == "#BUILD_INT")
     {
         int val = std::stoi(previous.lexeme);

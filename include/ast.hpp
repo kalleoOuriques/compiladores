@@ -59,7 +59,8 @@ public:
     return "";
   }
 
-  virtual std::string genCode(CodeGenerator &gen, std::string loopExit = "") {
+  virtual std::string genCode(CodeGenerator &gen, std::string loopExit = "")
+  {
     (void)gen;
     (void)loopExit;
     return "";
@@ -95,8 +96,10 @@ public:
     (void)insideLoop;
     return "int";
   }
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
-    (void)gen; (void)loopExit;
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
+    (void)gen;
+    (void)loopExit;
     return std::to_string(value);
   }
 };
@@ -117,8 +120,10 @@ public:
     (void)insideLoop;
     return "float";
   }
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
-    (void)gen; (void)loopExit;
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
+    (void)gen;
+    (void)loopExit;
     return std::to_string(value);
   }
 };
@@ -140,8 +145,10 @@ public:
     return "string";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
-    (void)gen; (void)loopExit;
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
+    (void)gen;
+    (void)loopExit;
     // Retorna a string entre aspas para ser usada no código intermediário
     return "\"" + value + "\"";
   }
@@ -183,13 +190,16 @@ public:
     return entry->type;
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     std::vector<std::string> argAddrs;
-    for (const auto &arg : args) {
+    for (const auto &arg : args)
+    {
       argAddrs.push_back(arg->genCode(gen, loopExit));
     }
 
-    for (const auto &addr : argAddrs) {
+    for (const auto &addr : argAddrs)
+    {
       gen.emit("param " + addr);
     }
 
@@ -225,8 +235,10 @@ public:
     }
     return entry->type;
   }
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
-    (void)gen; (void)loopExit;
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
+    (void)gen;
+    (void)loopExit;
     return name;
   }
 };
@@ -269,14 +281,15 @@ public:
     return "ERROR";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     std::string t1 = left->genCode(gen, loopExit);
     std::string t2 = right->genCode(gen, loopExit);
-    
+
     std::string temp = gen.newTemp();
     // t0 = t1 + t2
     gen.emit(temp, t1, op, t2);
-    
+
     return temp;
   }
 };
@@ -318,9 +331,12 @@ public:
     return "";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
-    for (const auto &stmt : statements) {
-      if (stmt) stmt->genCode(gen, loopExit);
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
+    for (const auto &stmt : statements)
+    {
+      if (stmt)
+        stmt->genCode(gen, loopExit);
     }
     return "";
   }
@@ -381,8 +397,10 @@ public:
     return "void";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
-    if (initializer) {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
+    if (initializer)
+    {
       std::string valAddr = initializer->genCode(gen, loopExit);
       // x = val
       gen.emit(varName, valAddr);
@@ -431,7 +449,8 @@ public:
     return entry->type;
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     std::string valAddr = value->genCode(gen, loopExit);
     gen.emit(varName, valAddr);
     return varName;
@@ -478,21 +497,24 @@ public:
     return "";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     std::string condAddr = condition->genCode(gen, loopExit);
-    
+
     std::string labelElse = gen.newLabel();
     std::string labelEnd = gen.newLabel();
 
     // ifFalse cond goto L_Else
     gen.emit("ifFalse " + condAddr + " goto " + labelElse);
-    
-    if (thenBranch) thenBranch->genCode(gen, loopExit);
+
+    if (thenBranch)
+      thenBranch->genCode(gen, loopExit);
     gen.emit("goto " + labelEnd);
-    
+
     gen.emitLabel(labelElse);
-    if (elseBranch) elseBranch->genCode(gen, loopExit);
-    
+    if (elseBranch)
+      elseBranch->genCode(gen, loopExit);
+
     gen.emitLabel(labelEnd);
     return "";
   }
@@ -547,26 +569,40 @@ public:
     return "";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     (void)loopExit; // O for cria um novo contexto de loop
-    
-    if (init) init->genCode(gen, "");
+
+    // Estrutura do Loop em TAC:
+    // 1. Inicialização (ex: i = 0)
+    // 2. Label de Início (L_start) <- Ponto de retorno
+    // 3. Teste de Condição. Se Falso, pula para L_end (Break implícito)
+    // 4. Corpo do Loop (passamos L_end para permitir 'break' internos)
+    // 5. Atualização (ex: i = i + 1)
+    // 6. Goto incondicional para L_start
+    // 7. Label de Fim (L_end)
+
+    if (init)
+      init->genCode(gen, "");
 
     std::string labelStart = gen.newLabel();
     std::string labelEnd = gen.newLabel(); // Este é o label para break
 
     gen.emitLabel(labelStart);
 
-    if (condition) {
+    if (condition)
+    {
       std::string condAddr = condition->genCode(gen, "");
       gen.emit("ifFalse " + condAddr + " goto " + labelEnd);
     }
 
     // O corpo recebe labelEnd para lidar com break
-    if (body) body->genCode(gen, labelEnd);
+    if (body)
+      body->genCode(gen, labelEnd);
 
-    if (update) update->genCode(gen, "");
-    
+    if (update)
+      update->genCode(gen, "");
+
     gen.emit("goto " + labelStart);
     gen.emitLabel(labelEnd);
 
@@ -607,19 +643,22 @@ public:
     return "";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     (void)loopExit; // While cria novo contexto
     std::string labelStart = gen.newLabel();
     std::string labelEnd = gen.newLabel();
 
     gen.emitLabel(labelStart);
-    
-    if (condition) {
+
+    if (condition)
+    {
       std::string condAddr = condition->genCode(gen, "");
       gen.emit("ifFalse " + condAddr + " goto " + labelEnd);
     }
 
-    if (body) body->genCode(gen, labelEnd);
+    if (body)
+      body->genCode(gen, labelEnd);
 
     gen.emit("goto " + labelStart);
     gen.emitLabel(labelEnd);
@@ -656,12 +695,16 @@ public:
     return "void";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     (void)loopExit;
-    if (value) {
+    if (value)
+    {
       std::string valAddr = value->genCode(gen, "");
       gen.emit("return " + valAddr);
-    } else {
+    }
+    else
+    {
       gen.emit("return");
     }
     return "";
@@ -694,8 +737,10 @@ public:
     return "void";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
-    if (expression) {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
+    if (expression)
+    {
       std::string val = expression->genCode(gen, loopExit);
       gen.emit("print " + val);
     }
@@ -729,7 +774,8 @@ public:
     return entry->type;
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     (void)loopExit;
     gen.emit("read " + varName);
     return "";
@@ -757,10 +803,14 @@ public:
     return "void";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
-    if (!loopExit.empty()) {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
+    if (!loopExit.empty())
+    {
       gen.emit("goto " + loopExit);
-    } else {
+    }
+    else
+    {
       std::cerr << "Erro GCI: Break encontrado fora de contexto de loop.\n";
     }
     return "";
@@ -838,12 +888,14 @@ public:
     return "";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     (void)loopExit;
     gen.emitLabel(name);
-    
-    if (body) body->genCode(gen, "");
-    
+
+    if (body)
+      body->genCode(gen, "");
+
     return "";
   }
 };
@@ -878,15 +930,17 @@ public:
     return "";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     (void)loopExit;
-    for (const auto &node : globals) {
-      if (node) node->genCode(gen, "");
+    for (const auto &node : globals)
+    {
+      if (node)
+        node->genCode(gen, "");
     }
     return "";
   }
 };
-
 
 class ArrayAccessNode : public ExprNode
 {
@@ -926,7 +980,8 @@ public:
     return entry->type;
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     std::string idxAddr = index->genCode(gen, loopExit);
     std::string temp = gen.newTemp();
     // Emite: t0 = arr[i]
@@ -992,7 +1047,8 @@ public:
     return "";
   }
 
-  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override {
+  std::string genCode(CodeGenerator &gen, std::string loopExit = "") override
+  {
     std::string idxAddr = index->genCode(gen, loopExit);
     std::string valAddr = value->genCode(gen, loopExit);
     // arr[i] = val
