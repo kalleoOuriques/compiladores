@@ -96,13 +96,13 @@ Erro semântico: Atribuição inválida. Variável 'found' é do tipo int mas re
 
 ## 📝 Estrutura do Código
 
+```
 compilador/
 ├── include/ # Headers (.hpp)
 ├── src/ # Implementações (.cpp)
 ├── test/ # Arquivos de teste (.convcc)
 ├── Makefile # Build system
 └── README.md # Este arquivo
-
 ```
 
 ## 🔤 Tokens Reconhecidos
@@ -124,7 +124,6 @@ A gramática foi transformada para LL(1) removendo:
 Exemplo de transformação:
 
 ```
-
 # Antes (com recursão à esquerda)
 
 EXPR → EXPR + TERM | TERM
@@ -133,7 +132,6 @@ EXPR → EXPR + TERM | TERM
 
 EXPR → TERM EXPR'
 EXPR' → + TERM EXPR' | ε
-
 ```
 
 ## 🛠️ Construtos Suportados
@@ -167,6 +165,7 @@ O compilador **para imediatamente** ao encontrar um erro e exibe:
 - Descrição clara do problema
 
 ### Erros Semânticos
+
 - Tipos incompatíveis em atribuições e expressões
 - Uso de variáveis não declaradas
 - Verificação de tipos em operações e comparações
@@ -186,7 +185,7 @@ O compilador **para imediatamente** ao encontrar um erro e exibe:
 - Construída manualmente em `grammar.cpp`
 
 ### Analisador Semântico
+
 - Construção de AST (Árvore Sintática Abstrata) completa
 - Verificação de Tipos e controle de Escopos aninhados
 - Implementado via SDT
-```
